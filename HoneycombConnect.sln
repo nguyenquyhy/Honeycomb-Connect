@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneycombConnect.Wpf", "HoneycombConnect.Wpf\HoneycombConnect.Wpf.csproj", "{BBD2FAAA-B59E-4D86-94BA-A09D1C8E477B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneycombConnect.SimConnectFSX", "HoneycombConnect.SimConnectFSX\HoneycombConnect.SimConnectFSX.csproj", "{7C363757-AECD-4917-822F-1C207CB47977}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBD2FAAA-B59E-4D86-94BA-A09D1C8E477B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD2FAAA-B59E-4D86-94BA-A09D1C8E477B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD2FAAA-B59E-4D86-94BA-A09D1C8E477B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD2FAAA-B59E-4D86-94BA-A09D1C8E477B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C363757-AECD-4917-822F-1C207CB47977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C363757-AECD-4917-822F-1C207CB47977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C363757-AECD-4917-822F-1C207CB47977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C363757-AECD-4917-822F-1C207CB47977}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BC10B34-4358-4531-98D0-D3A8144B53A4}
+	EndGlobalSection
+EndGlobal
