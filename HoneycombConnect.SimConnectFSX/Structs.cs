@@ -16,6 +16,8 @@ namespace HoneycombConnect.SimConnectFSX
         NAV_TOGGLE,
         STROBE_ON,
         STROBE_OFF,
+        MASTER_ALT_TOGGLE,
+        MASTER_BATTERY_TOGGLE,
     }
 
     enum GROUPID
@@ -38,5 +40,8 @@ namespace HoneycombConnect.SimConnectFSX
         public int TaxiLight;
         public int NavLight;
         public int StrobeLight;
+
+        public int Engine1Generator;
+        public int MasterBattery;
     }
 }

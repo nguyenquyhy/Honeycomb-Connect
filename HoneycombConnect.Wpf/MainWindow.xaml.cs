@@ -1,7 +1,6 @@
 ﻿using HoneycombConnect.SimConnectFSX;
 using Microsoft.Extensions.Logging;
 using SharpDX.DirectInput;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -56,61 +55,82 @@ namespace HoneycombConnect.Wpf
                                 {
                                     switch (i)
                                     {
+                                        case 12:
+                                            // Master ALT
+                                            logger.LogInformation("Master ALT ON");
+                                            flightConnect.MasterAltSet(true);
+                                            break;
+                                        case 13:
+                                            // Master ALT
+                                            logger.LogInformation("Master Alt OFF");
+                                            flightConnect.MasterAltSet(false);
+                                            break;
+                                        case 14:
+                                            // Master Battery
+                                            logger.LogInformation("Battery ON");
+                                            flightConnect.BatterySet(true);
+                                            break;
+                                        case 15:
+                                            // Master Battery
+                                            logger.LogInformation("Master Alt OFF");
+                                            flightConnect.BatterySet(false);
+                                            break;
+
                                         case 20:
                                             // Beacon
                                             logger.LogInformation("Beacon ON");
-                                            flightConnect.BeaconOn();
+                                            flightConnect.BeaconSet(true);
                                             break;
                                         case 21:
                                             // Beacon
                                             logger.LogInformation("Beacon OFF");
-                                            flightConnect.BeaconOff();
+                                            flightConnect.BeaconSet(false);
                                             break;
 
                                         case 22:
                                             // Beacon
                                             logger.LogInformation("Landing Lights ON");
-                                            flightConnect.LandingOn();
+                                            flightConnect.LandingSet(true);
                                             break;
                                         case 23:
                                             // Beacon
                                             logger.LogInformation("Landing Lights OFF");
-                                            flightConnect.LandingOff();
+                                            flightConnect.LandingSet(false);
                                             break;
 
                                         case 24:
                                             // Taxi
                                             logger.LogInformation("Taxi ON");
-                                            flightConnect.TaxiOn();
+                                            flightConnect.TaxiSet(true);
                                             break;
                                         case 25:
                                             // Taxi
                                             logger.LogInformation("Taxi OFF");
-                                            flightConnect.TaxiOff();
+                                            flightConnect.TaxiSet(false);
                                             break;
 
 
                                         case 26:
                                             // Nav
                                             logger.LogInformation("Nav ON");
-                                            flightConnect.NavOn();
+                                            flightConnect.NavSet(true);
                                             break;
                                         case 27:
                                             // Nav
                                             logger.LogInformation("Nav OFF");
-                                            flightConnect.NavOff();
+                                            flightConnect.NavSet(false);
                                             break;
 
 
                                         case 28:
                                             // Strobe
                                             logger.LogInformation("Strobe ON");
-                                            flightConnect.StrobeOn();
+                                            flightConnect.StrobeSet(true);
                                             break;
                                         case 29:
                                             // Strobe
                                             logger.LogInformation("Strobe OFF");
-                                            flightConnect.StrobeOff();
+                                            flightConnect.StrobeSet(false);
                                             break;
                                     }
                                 }

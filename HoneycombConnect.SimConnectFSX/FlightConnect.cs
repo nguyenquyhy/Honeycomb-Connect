@@ -44,7 +44,17 @@ namespace HoneycombConnect.SimConnectFSX
                             {
                                 this.simconnect.ReceiveMessage();
                             }
-                            catch { RecoverFromError(); }
+                            catch (Exception ex)
+                            {
+                                if (ex.Message == "0xC000014B")
+                                {
+                                    CloseConnection();
+                                }
+                                else
+                                {
+                                    RecoverFromError();
+                                }
+                            }
 
                             isHandled = true;
                         }
@@ -82,10 +92,15 @@ namespace HoneycombConnect.SimConnectFSX
             simconnect.MapClientEventToSimEvent(EVENTS.NAV_TOGGLE, "TOGGLE_NAV_LIGHTS");
             simconnect.MapClientEventToSimEvent(EVENTS.STROBE_ON, "STROBES_ON");
             simconnect.MapClientEventToSimEvent(EVENTS.STROBE_OFF, "STROBES_OFF");
+
+            simconnect.MapClientEventToSimEvent(EVENTS.MASTER_ALT_TOGGLE, "TOGGLE_MASTER_ALTERNATOR");
+            simconnect.MapClientEventToSimEvent(EVENTS.MASTER_BATTERY_TOGGLE, "TOGGLE_MASTER_BATTERY");
         }
 
         public void CloseConnection()
         {
+            logger.LogInformation("Flight Simulator has exited");
+            Closed?.Invoke(this, new EventArgs());
             try
             {
                 cts?.Cancel();
@@ -143,86 +158,75 @@ namespace HoneycombConnect.SimConnectFSX
                 0.0f,
                 SimConnect.SIMCONNECT_UNUSED);
 
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
+                "GENERAL ENG MASTER ALTERNATOR:1",
+                "Bool",
+                SIMCONNECT_DATATYPE.INT32,
+                0.0f,
+                SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
+                "ELECTRICAL MASTER BATTERY",
+                "Bool",
+                SIMCONNECT_DATATYPE.INT32,
+                0.0f,
+                SimConnect.SIMCONNECT_UNUSED);
+
             simconnect.RegisterDataDefineStruct<PlaneStatusStruct>(DEFINITIONS.PlaneStatus);
         }
 
-        public void BeaconOn()
+        public void BeaconSet(bool on)
         {
-            if (currentStatus?.BeaconLight == 0)
+            if (currentStatus?.BeaconLight == (on ? 0 : 1))
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.BEACON_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void BeaconOff()
+        public void LandingSet(bool on)
         {
-            if (currentStatus?.BeaconLight == 1)
-            {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.BEACON_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-            }
-        }
-
-        public void LandingOn()
-        {
-            if (currentStatus?.LandingLight == 0)
+            if (currentStatus?.LandingLight == (on ? 0 : 1))
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.LANDING_LIGHTS_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void LandingOff()
+        public void TaxiSet(bool on)
         {
-            if (currentStatus?.LandingLight == 1)
-            {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.LANDING_LIGHTS_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-            }
-        }
-
-        public void TaxiOn()
-        {
-            if (currentStatus?.TaxiLight == 0)
+            if (currentStatus?.TaxiLight == (on ? 0 : 1))
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.TAXI_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void TaxiOff()
+        public void NavSet(bool on)
         {
-            if (currentStatus?.TaxiLight == 1)
-            {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.TAXI_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-            }
-        }
-
-        public void NavOn()
-        {
-            if (currentStatus?.NavLight == 0)
+            if (currentStatus?.NavLight == (on ? 0 : 1))
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.NAV_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void NavOff()
+        public void StrobeSet(bool on)
         {
-            if (currentStatus?.NavLight == 1)
+            if (currentStatus?.StrobeLight == (on ? 0 : 1))
             {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.NAV_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, on ? EVENTS.STROBE_ON : EVENTS.STROBE_OFF, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void StrobeOn()
+        public void MasterAltSet(bool on)
         {
-            if (currentStatus?.StrobeLight == 0)
+            if (currentStatus?.Engine1Generator == (on ? 0 : 1))
             {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.STROBE_ON, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_ALT_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
-        public void StrobeOff()
+        public void BatterySet(bool on)
         {
-            if (currentStatus?.StrobeLight == 1)
+            //if (currentStatus?.MasterBattery == (on ? 0 : 1))
             {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.STROBE_OFF, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_BATTERY_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
@@ -301,8 +305,6 @@ namespace HoneycombConnect.SimConnectFSX
         // The case where the user closes Prepar3D
         void simconnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
         {
-            logger.LogInformation("Flight Simulator has exited");
-            Closed?.Invoke(this, new EventArgs());
             CloseConnection();
         }
 
