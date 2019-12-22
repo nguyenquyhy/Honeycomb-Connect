@@ -10,6 +10,8 @@ namespace HoneycombConnect.SimConnectFSX
     {
         private const int StatusDelayMilliseconds = 500;
 
+        public event EventHandler<PlaneStatusUpdatedEventArgs> PlaneStatusUpdated;
+
         public event EventHandler Closed;
 
         // User-defined win32 event
@@ -242,6 +244,7 @@ namespace HoneycombConnect.SimConnectFSX
                         if (status.HasValue)
                         {
                             currentStatus = status;
+                            PlaneStatusUpdated?.Invoke(this, new PlaneStatusUpdatedEventArgs(new PlaneStatus(status.Value)));
                         }
                         else
                         {

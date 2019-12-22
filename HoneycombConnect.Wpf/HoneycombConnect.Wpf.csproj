@@ -4,6 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <PackageId>HoneycombConnect</PackageId>
+    <Authors>Nguyen Quy Hy</Authors>
+    <Product>Honeycomb Connect</Product>
+    <Version>0.1.0</Version>
+    <PackageProjectUrl>https://github.com/nguyenquyhy/Honeycomb-Connect</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

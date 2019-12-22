@@ -4,8 +4,59 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HoneycombConnect.Wpf"
-        mc:Ignorable="d" Loaded="Window_Loaded"
-        Title="MainWindow" Height="450" Width="800">
+        mc:Ignorable="d" Loaded="Window_Loaded" ResizeMode="NoResize"
+        Title="Honeycomb Connect" Height="150" Width="800">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding SimConnectionState}" />
+        
+        <TextBlock Text="BCN" Grid.Column="1" />
+        <TextBlock Text="LAND" Grid.Column="2" />
+        <TextBlock Text="TAXI" Grid.Column="3" />
+        <TextBlock Text="NAV" Grid.Column="4" />
+        <TextBlock Text="STROBE" Grid.Column="5" />
+        <TextBlock Text="MASTER ALT" Grid.Column="6" />
+        <TextBlock Text="MASTER BAT" Grid.Column="7" />
+
+        <CheckBox IsChecked="{Binding PlaneStatus.BeaconLight}" IsEnabled="False" Grid.Column="1" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.LandingLight}" IsEnabled="False" Grid.Column="2" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.TaxiLight}" IsEnabled="False" Grid.Column="3" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.NavLight}" IsEnabled="False" Grid.Column="4" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.StrobeLight}" IsEnabled="False" Grid.Column="5" Grid.Row="1" />
+
+        <CheckBox IsChecked="{Binding PlaneStatus.Engine1Generator}" IsEnabled="False" Grid.Column="6" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.MasterBattery}" IsEnabled="False" Grid.Column="7" Grid.Row="1" />
+
+        <TextBlock Text="Status" Grid.Row="1" />
+        <TextBlock Text="Enable" Grid.Row="2" />
+        <TextBlock Text="Sync" Grid.Row="3" />
     </Grid>
 </Window>

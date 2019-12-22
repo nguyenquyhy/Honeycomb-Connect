@@ -59,6 +59,7 @@ namespace HoneycombConnect.Wpf
             });
 
             services.AddSingleton<FlightConnect>();
+            services.AddSingleton<MainViewModel>();
 
             services.AddTransient(typeof(MainWindow));
         }
@@ -82,15 +83,19 @@ namespace HoneycombConnect.Wpf
 
         private async Task InitializeSimConnectAsync(FlightConnect simConnect)
         {
+            var viewModel = ServiceProvider.GetService<MainViewModel>();
             while (true)
             {
                 try
                 {
+                    viewModel.SimConnectionState = ConnectionState.Connecting;
                     simConnect.Initialize(Handle);
+                    viewModel.SimConnectionState = ConnectionState.Connected;
                     break;
                 }
                 catch (COMException)
                 {
+                    viewModel.SimConnectionState = ConnectionState.Failed;
                     await Task.Delay(5000).ConfigureAwait(true);
                 }
             }
@@ -99,6 +104,7 @@ namespace HoneycombConnect.Wpf
         private async void SimConnect_Closed(object sender, EventArgs e)
         {
             var simConnect = ServiceProvider.GetService<FlightConnect>();
+
             await InitializeSimConnectAsync(simConnect).ConfigureAwait(true);
         }
     }

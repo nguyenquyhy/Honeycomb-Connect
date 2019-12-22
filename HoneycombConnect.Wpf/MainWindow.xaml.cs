@@ -14,12 +14,22 @@ namespace HoneycombConnect.Wpf
     {
         private readonly ILogger<MainWindow> logger;
         private readonly FlightConnect flightConnect;
+        private readonly MainViewModel viewModel;
 
-        public MainWindow(ILogger<MainWindow> logger, FlightConnect flightConnect)
+        public MainWindow(ILogger<MainWindow> logger, FlightConnect flightConnect, MainViewModel viewModel)
         {
             InitializeComponent();
             this.logger = logger;
             this.flightConnect = flightConnect;
+            this.viewModel = viewModel;
+            DataContext = viewModel;
+
+            flightConnect.PlaneStatusUpdated += FlightConnect_PlaneStatusUpdated;
+        }
+
+        private void FlightConnect_PlaneStatusUpdated(object sender, PlaneStatusUpdatedEventArgs e)
+        {
+            viewModel.PlaneStatus = e.PlaneStatus;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
