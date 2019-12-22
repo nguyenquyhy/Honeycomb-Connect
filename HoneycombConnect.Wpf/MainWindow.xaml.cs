@@ -50,7 +50,7 @@ namespace HoneycombConnect.Wpf
                         {
                             if (lastButtons[i] != state.Buttons[i])
                             {
-                                Debug.WriteLine($"Button {i} changed to {state.Buttons[i]}");
+                                logger.LogDebug($"Button {i} changed to {state.Buttons[i]}");
 
                                 if (state.Buttons[i])
                                 {
@@ -65,6 +65,17 @@ namespace HoneycombConnect.Wpf
                                             // Beacon
                                             logger.LogInformation("Beacon OFF");
                                             flightConnect.BeaconOff();
+                                            break;
+
+                                        case 22:
+                                            // Beacon
+                                            logger.LogInformation("Landing Lights ON");
+                                            flightConnect.LandingOn();
+                                            break;
+                                        case 23:
+                                            // Beacon
+                                            logger.LogInformation("Landing Lights OFF");
+                                            flightConnect.LandingOff();
                                             break;
 
                                         case 24:
@@ -88,6 +99,18 @@ namespace HoneycombConnect.Wpf
                                             // Nav
                                             logger.LogInformation("Nav OFF");
                                             flightConnect.NavOff();
+                                            break;
+
+
+                                        case 28:
+                                            // Strobe
+                                            logger.LogInformation("Strobe ON");
+                                            flightConnect.StrobeOn();
+                                            break;
+                                        case 29:
+                                            // Strobe
+                                            logger.LogInformation("Strobe OFF");
+                                            flightConnect.StrobeOff();
                                             break;
                                     }
                                 }

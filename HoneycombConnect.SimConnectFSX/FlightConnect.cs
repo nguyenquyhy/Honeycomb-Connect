@@ -77,8 +77,11 @@ namespace HoneycombConnect.SimConnectFSX
             simconnect.OnRecvEvent += simconnect_OnRecvEvent;
 
             simconnect.MapClientEventToSimEvent(EVENTS.BEACON_TOGGLE, "TOGGLE_BEACON_LIGHTS");
+            simconnect.MapClientEventToSimEvent(EVENTS.LANDING_LIGHTS_TOGGLE, "LANDING_LIGHTS_TOGGLE");
             simconnect.MapClientEventToSimEvent(EVENTS.TAXI_TOGGLE, "TOGGLE_TAXI_LIGHTS");
             simconnect.MapClientEventToSimEvent(EVENTS.NAV_TOGGLE, "TOGGLE_NAV_LIGHTS");
+            simconnect.MapClientEventToSimEvent(EVENTS.STROBE_ON, "STROBES_ON");
+            simconnect.MapClientEventToSimEvent(EVENTS.STROBE_OFF, "STROBES_OFF");
         }
 
         public void CloseConnection()
@@ -116,6 +119,12 @@ namespace HoneycombConnect.SimConnectFSX
                 0.0f,
                 SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
+                "LIGHT LANDING",
+                "bool",
+                SIMCONNECT_DATATYPE.INT32,
+                0.0f,
+                SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
                 "LIGHT TAXI",
                 "bool",
                 SIMCONNECT_DATATYPE.INT32,
@@ -123,6 +132,12 @@ namespace HoneycombConnect.SimConnectFSX
                 SimConnect.SIMCONNECT_UNUSED);
             simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
                 "LIGHT NAV",
+                "bool",
+                SIMCONNECT_DATATYPE.INT32,
+                0.0f,
+                SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
+                "LIGHT STROBE",
                 "bool",
                 SIMCONNECT_DATATYPE.INT32,
                 0.0f,
@@ -144,6 +159,22 @@ namespace HoneycombConnect.SimConnectFSX
             if (currentStatus?.BeaconLight == 1)
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.BEACON_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        public void LandingOn()
+        {
+            if (currentStatus?.LandingLight == 0)
+            {
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.LANDING_LIGHTS_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        public void LandingOff()
+        {
+            if (currentStatus?.LandingLight == 1)
+            {
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.LANDING_LIGHTS_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
@@ -176,6 +207,22 @@ namespace HoneycombConnect.SimConnectFSX
             if (currentStatus?.NavLight == 1)
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.NAV_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        public void StrobeOn()
+        {
+            if (currentStatus?.StrobeLight == 0)
+            {
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.STROBE_ON, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        public void StrobeOff()
+        {
+            if (currentStatus?.StrobeLight == 1)
+            {
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.STROBE_OFF, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 

@@ -11,8 +11,11 @@ namespace HoneycombConnect.SimConnectFSX
     {
         PAUSE,
         BEACON_TOGGLE,
+        LANDING_LIGHTS_TOGGLE,
         TAXI_TOGGLE,
         NAV_TOGGLE,
+        STROBE_ON,
+        STROBE_OFF,
     }
 
     enum GROUPID
@@ -31,7 +34,9 @@ namespace HoneycombConnect.SimConnectFSX
     struct PlaneStatusStruct
     {
         public int BeaconLight;
+        public int LandingLight;
         public int TaxiLight;
         public int NavLight;
+        public int StrobeLight;
     }
 }
