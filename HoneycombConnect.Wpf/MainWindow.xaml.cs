@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HoneycombConnect.SimConnectFSX;
+using Microsoft.Extensions.Logging;
+using SharpDX.DirectInput;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace HoneycombConnect.Wpf
 {
@@ -20,9 +13,91 @@ namespace HoneycombConnect.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly ILogger<MainWindow> logger;
+        private readonly FlightConnect flightConnect;
+
+        public MainWindow(ILogger<MainWindow> logger, FlightConnect flightConnect)
         {
             InitializeComponent();
+            this.logger = logger;
+            this.flightConnect = flightConnect;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var directInput = new DirectInput();
+            var devices = directInput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
+
+            var alpha = devices.FirstOrDefault(o => o.ProductName == "Alpha Flight Controls");
+
+            var input = new Joystick(directInput, alpha.InstanceGuid);
+            input.Properties.BufferSize = 256;
+            input.Acquire();
+
+            Task.Run(async () =>
+            {
+                bool[] lastButtons = null;
+                while (true)
+                {
+                    input.Poll();
+                    var state = input.GetCurrentState();
+                    var data = input.GetBufferedData();
+                    if (lastButtons == null)
+                        lastButtons = state.Buttons;
+                    else
+                    {
+                        for (var i = 0; i < lastButtons.Length; i++)
+                        {
+                            if (lastButtons[i] != state.Buttons[i])
+                            {
+                                Debug.WriteLine($"Button {i} changed to {state.Buttons[i]}");
+
+                                if (state.Buttons[i])
+                                {
+                                    switch (i)
+                                    {
+                                        case 20:
+                                            // Beacon
+                                            logger.LogInformation("Beacon ON");
+                                            flightConnect.BeaconOn();
+                                            break;
+                                        case 21:
+                                            // Beacon
+                                            logger.LogInformation("Beacon OFF");
+                                            flightConnect.BeaconOff();
+                                            break;
+
+                                        case 24:
+                                            // Taxi
+                                            logger.LogInformation("Taxi ON");
+                                            flightConnect.TaxiOn();
+                                            break;
+                                        case 25:
+                                            // Taxi
+                                            logger.LogInformation("Taxi OFF");
+                                            flightConnect.TaxiOff();
+                                            break;
+
+
+                                        case 26:
+                                            // Nav
+                                            logger.LogInformation("Nav ON");
+                                            flightConnect.NavOn();
+                                            break;
+                                        case 27:
+                                            // Nav
+                                            logger.LogInformation("Nav OFF");
+                                            flightConnect.NavOff();
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        lastButtons = state.Buttons;
+                        await Task.Delay(100);
+                    }
+                }
+            });
         }
     }
 }

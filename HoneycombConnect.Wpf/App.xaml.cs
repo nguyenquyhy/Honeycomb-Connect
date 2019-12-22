@@ -1,9 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HoneycombConnect.SimConnectFSX;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using System;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace HoneycombConnect.Wpf
 {
@@ -15,6 +20,7 @@ namespace HoneycombConnect.Wpf
         public ServiceProvider ServiceProvider { get; private set; }
 
         private MainWindow mainWindow = null;
+        private IntPtr Handle;
 
         public IConfigurationRoot Configuration { get; private set; }
 
@@ -52,11 +58,48 @@ namespace HoneycombConnect.Wpf
                     .AddSerilog();
             });
 
+            services.AddSingleton<FlightConnect>();
+
             services.AddTransient(typeof(MainWindow));
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Initialize SimConnect
+            var simConnect = ServiceProvider.GetService<FlightConnect>();
+            if (simConnect != null)
+            {
+                simConnect.Closed += SimConnect_Closed;
+
+                // Create an event handle for the WPF window to listen for SimConnect events
+                Handle = new WindowInteropHelper(sender as Window).Handle; // Get handle of main WPF Window
+                var HandleSource = HwndSource.FromHwnd(Handle); // Get source of handle in order to add event handlers to it
+                HandleSource.AddHook(simConnect.HandleSimConnectEvents);
+
+                await InitializeSimConnectAsync(simConnect).ConfigureAwait(true);
+            }
+        }
+
+        private async Task InitializeSimConnectAsync(FlightConnect simConnect)
+        {
+            while (true)
+            {
+                try
+                {
+                    simConnect.Initialize(Handle);
+                    break;
+                }
+                catch (COMException)
+                {
+                    await Task.Delay(5000).ConfigureAwait(true);
+                }
+            }
+        }
+
+        private async void SimConnect_Closed(object sender, EventArgs e)
+        {
+            var simConnect = ServiceProvider.GetService<FlightConnect>();
+            await InitializeSimConnectAsync(simConnect).ConfigureAwait(true);
         }
     }
 }
