@@ -9,6 +9,7 @@
     <Product>Honeycomb Connect</Product>
     <Version>0.1.0</Version>
     <PackageProjectUrl>https://github.com/nguyenquyhy/Honeycomb-Connect</PackageProjectUrl>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
