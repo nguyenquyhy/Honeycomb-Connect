@@ -14,6 +14,7 @@ namespace HoneycombConnect.SimConnectFSX
 
             Engine1Generator = data.Engine1Generator == 1;
             MasterBattery = data.MasterBattery == 1;
+            MasterAvionics = data.MasterAvionics == 1;
         }
 
         public bool BeaconLight { get; set; }
@@ -24,6 +25,7 @@ namespace HoneycombConnect.SimConnectFSX
 
         public bool Engine1Generator { get; set; }
         public bool MasterBattery { get; set; }
+        public bool MasterAvionics { get; set; }
     }
 
     public class PlaneStatusUpdatedEventArgs : EventArgs

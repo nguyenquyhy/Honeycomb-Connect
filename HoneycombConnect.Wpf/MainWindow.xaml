@@ -28,6 +28,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -45,6 +46,7 @@
         <TextBlock Text="STROBE" Grid.Column="5" />
         <TextBlock Text="MASTER ALT" Grid.Column="6" />
         <TextBlock Text="MASTER BAT" Grid.Column="7" />
+        <TextBlock Text="AVIONICS" Grid.Column="8" />
 
         <CheckBox IsChecked="{Binding PlaneStatus.BeaconLight}" IsEnabled="False" Grid.Column="1" Grid.Row="1" />
         <CheckBox IsChecked="{Binding PlaneStatus.LandingLight}" IsEnabled="False" Grid.Column="2" Grid.Row="1" />
@@ -54,6 +56,22 @@
 
         <CheckBox IsChecked="{Binding PlaneStatus.Engine1Generator}" IsEnabled="False" Grid.Column="6" Grid.Row="1" />
         <CheckBox IsChecked="{Binding PlaneStatus.MasterBattery}" IsEnabled="False" Grid.Column="7" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding PlaneStatus.MasterAvionics}" IsEnabled="False" Grid.Column="8" Grid.Row="1" />
+
+        <CheckBox IsChecked="{Binding BeaconEnabled}" Grid.Column="1" Grid.Row="2" />
+        <CheckBox IsChecked="{Binding BeaconSync}" Grid.Column="1" Grid.Row="3" />
+
+        <CheckBox IsChecked="{Binding LandingEnabled}" Grid.Column="2" Grid.Row="2" />
+        <CheckBox IsChecked="{Binding LandingSync}" Grid.Column="2" Grid.Row="3" />
+
+        <CheckBox IsChecked="{Binding TaxiEnabled}" Grid.Column="3" Grid.Row="2" />
+        <CheckBox IsChecked="{Binding TaxiSync}" Grid.Column="3" Grid.Row="3" />
+
+        <CheckBox IsChecked="{Binding NavEnabled}" Grid.Column="4" Grid.Row="2" />
+        <CheckBox IsChecked="{Binding NavSync}" Grid.Column="4" Grid.Row="3" />
+
+        <CheckBox IsChecked="{Binding StrobeEnabled}" Grid.Column="5" Grid.Row="2" />
+        <CheckBox IsChecked="{Binding StrobeSync}" Grid.Column="5" Grid.Row="3" />
 
         <TextBlock Text="Status" Grid.Row="1" />
         <TextBlock Text="Enable" Grid.Row="2" />

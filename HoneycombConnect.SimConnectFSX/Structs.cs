@@ -18,6 +18,8 @@ namespace HoneycombConnect.SimConnectFSX
         STROBE_OFF,
         MASTER_ALT_TOGGLE,
         MASTER_BATTERY_TOGGLE,
+        //MASTER_AVIONICS_TOGGLE,
+        MASTER_AVIONICS_SET,
     }
 
     enum GROUPID
@@ -43,5 +45,6 @@ namespace HoneycombConnect.SimConnectFSX
 
         public int Engine1Generator;
         public int MasterBattery;
+        public int MasterAvionics;
     }
 }

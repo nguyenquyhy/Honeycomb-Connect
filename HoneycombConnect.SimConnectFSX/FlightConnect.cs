@@ -97,6 +97,8 @@ namespace HoneycombConnect.SimConnectFSX
 
             simconnect.MapClientEventToSimEvent(EVENTS.MASTER_ALT_TOGGLE, "TOGGLE_MASTER_ALTERNATOR");
             simconnect.MapClientEventToSimEvent(EVENTS.MASTER_BATTERY_TOGGLE, "TOGGLE_MASTER_BATTERY");
+            //simconnect.MapClientEventToSimEvent(EVENTS.MASTER_AVIONICS_TOGGLE, "TOGGLE_AVIONICS_MASTER");
+            simconnect.MapClientEventToSimEvent(EVENTS.MASTER_AVIONICS_SET, "AVIONICS_MASTER_SET");
         }
 
         public void CloseConnection()
@@ -172,6 +174,12 @@ namespace HoneycombConnect.SimConnectFSX
                 SIMCONNECT_DATATYPE.INT32,
                 0.0f,
                 SimConnect.SIMCONNECT_UNUSED);
+            simconnect.AddToDataDefinition(DEFINITIONS.PlaneStatus,
+                "AVIONICS MASTER SWITCH",
+                "Bool",
+                SIMCONNECT_DATATYPE.INT32,
+                0.0f,
+                SimConnect.SIMCONNECT_UNUSED);
 
             simconnect.RegisterDataDefineStruct<PlaneStatusStruct>(DEFINITIONS.PlaneStatus);
         }
@@ -229,6 +237,14 @@ namespace HoneycombConnect.SimConnectFSX
             //if (currentStatus?.MasterBattery == (on ? 0 : 1))
             {
                 simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_BATTERY_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+            }
+        }
+
+        public void AvionicsSet(bool on)
+        {
+            //if (currentStatus?.MasterAvionics == (on ? 0 : 1))
+            {
+                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_AVIONICS_SET, on ? 1u : 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
