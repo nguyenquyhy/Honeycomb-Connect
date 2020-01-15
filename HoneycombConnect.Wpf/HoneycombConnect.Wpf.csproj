@@ -7,7 +7,7 @@
     <PackageId>HoneycombConnect</PackageId>
     <Authors>Nguyen Quy Hy</Authors>
     <Product>Honeycomb Connect</Product>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <PackageProjectUrl>https://github.com/nguyenquyhy/Honeycomb-Connect</PackageProjectUrl>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
