@@ -236,7 +236,7 @@ namespace HoneycombConnect.SimConnectFSX
         {
             //if (currentStatus?.MasterBattery == (on ? 0 : 1))
             {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_BATTERY_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                simconnect?.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_BATTERY_TOGGLE, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 
@@ -244,7 +244,7 @@ namespace HoneycombConnect.SimConnectFSX
         {
             //if (currentStatus?.MasterAvionics == (on ? 0 : 1))
             {
-                simconnect.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_AVIONICS_SET, on ? 1u : 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+                simconnect?.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENTS.MASTER_AVIONICS_SET, on ? 1u : 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
             }
         }
 

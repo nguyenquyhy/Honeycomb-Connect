@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HoneycombConnect.Wpf"
-        mc:Ignorable="d" Loaded="Window_Loaded" ResizeMode="NoResize"
+        mc:Ignorable="d" Loaded="Window_Loaded" StateChanged="Window_StateChanged"
+        ResizeMode="CanMinimize"
         Title="Honeycomb Connect" Height="150" Width="800">
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -17,7 +18,7 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -37,8 +38,17 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <tb:TaskbarIcon 
+            x:Name="myNotifyIcon"
+            xmlns:tb="http://www.hardcodet.net/taskbar"
+            Visibility="Collapsed"
+            ToolTipText="Honeycomb Connect"
+            IconSource="/icon.ico"
+            TrayLeftMouseDown="myNotifyIcon_TrayLeftMouseDown"
+            />
+
         <TextBlock Text="{Binding SimConnectionState}" />
-        
+
         <TextBlock Text="BCN" Grid.Column="1" />
         <TextBlock Text="LAND" Grid.Column="2" />
         <TextBlock Text="TAXI" Grid.Column="3" />
