@@ -265,13 +265,12 @@ namespace HoneycombConnect.Wpf
         {
             if (WindowState == WindowState.Minimized)
             {
-                Visibility = Visibility.Collapsed;
+                Hide();
                 myNotifyIcon.Visibility = Visibility.Visible;
-                WindowState = WindowState.Normal;
                 if (!notified)
                 {
                     notified = true;
-                    myNotifyIcon.ShowBalloonTip("Minimized to system tray", "Double click to restore the window.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                    myNotifyIcon.ShowBalloonTip("Minimized to system tray", "Click to restore the window.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
                     await Task.Delay(3000);
                     myNotifyIcon.HideBalloonTip();
                 }
@@ -281,7 +280,9 @@ namespace HoneycombConnect.Wpf
         private void myNotifyIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
             myNotifyIcon.Visibility = Visibility.Collapsed;
-            Visibility = Visibility.Visible;
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
         }
     }
 }
