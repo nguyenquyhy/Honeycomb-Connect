@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -77,7 +78,36 @@ namespace HoneycombConnect.Wpf
                 var HandleSource = HwndSource.FromHwnd(Handle); // Get source of handle in order to add event handlers to it
                 HandleSource.AddHook(simConnect.HandleSimConnectEvents);
 
-                await InitializeSimConnectAsync(simConnect).ConfigureAwait(true);
+                try
+                {
+                    await InitializeSimConnectAsync(simConnect).ConfigureAwait(true);
+                }
+                catch (BadImageFormatException ex)
+                {
+                    ServiceProvider.GetService<ILogger<MainWindow>>().LogError(ex, "Cannot initialize SimConnect!");
+
+                    var result = MessageBox.Show(mainWindow, "SimConnect not found. This component is needed to connect to Flight Simulator.\n" +
+                        "Please download SimConnect from\n\nhttps://events-storage.flighttracker.tech/downloads/SimConnect.zip\n\n" +
+                        "follow the ReadMe.txt in the zip file and try to start again.\n\nThis program will now exit.\n\nDo you want to open the SimConnect link above?",
+                        "Needed component is missing",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Error);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "https://events-storage.flighttracker.tech/downloads/SimConnect.zip",
+                                UseShellExecute = true
+                            });
+                        }
+                        catch { }
+                    }
+
+                    Shutdown(-1);
+                }
             }
         }
 
