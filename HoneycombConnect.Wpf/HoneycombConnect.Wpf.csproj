@@ -35,4 +35,10 @@
     <ProjectReference Include="..\HoneycombConnect.SimConnectFSX\HoneycombConnect.SimConnectFSX.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="HoneycombConnect.Wpf.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
